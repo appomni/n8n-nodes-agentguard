@@ -1,0 +1,29 @@
+repos:
+  # pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  - repo: local
+    hooks:
+      - id: lint
+        name: lint
+        entry: npm run lint
+        language: system
+        pass_filenames: false
+        types_or: [ts, javascript, json]
+
+      - id: typecheck
+        name: typecheck
+        entry: npx tsc --noEmit -p tsconfig.json
+        language: system
+        pass_filenames: false
+        types: [ts]

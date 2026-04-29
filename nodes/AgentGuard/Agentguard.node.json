@@ -1,0 +1,18 @@
+{
+	"node": "@appomni/n8n-nodes-agentguard",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["AI"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://github.com/appomni/n8n-nodes-agentguard#credentials"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/appomni/n8n-nodes-agentguard"
+			}
+		]
+	}
+}
