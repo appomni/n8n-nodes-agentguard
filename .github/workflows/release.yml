@@ -33,7 +33,7 @@ jobs:
 
       - name: Verify changelog matches
         run: |
-          expected=$(grep -m1 '^## ' CHANGELOG.md | sed 's/^## //')
+          expected=$(grep -m1 '^## ' CHANGELOG.md | sed -E 's/^## \[?([0-9A-Za-z.+-]+)\]?.*/\1/')
           if [ "$expected" != "${{ inputs.version }}" ]; then
             echo "CHANGELOG top is $expected, you asked for ${{ inputs.version }}"
             exit 1
