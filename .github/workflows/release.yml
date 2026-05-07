@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Verify changelog matches
+        run: |
+          expected=$(grep -m1 '^## ' CHANGELOG.md | sed 's/^## //')
+          if [ "$expected" != "${{ inputs.version }}" ]; then
+            echo "CHANGELOG top is $expected, you asked for ${{ inputs.version }}"
+            exit 1
+          fi
+
+      - name: Bump, commit, tag, push
+        run: |
+          npm version ${{ inputs.version }} -m "release: %s"
+          git push --follow-tags
