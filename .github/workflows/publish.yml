@@ -60,6 +60,11 @@ on:
       # Matches 0.1.0, 1.2.3, 2.0.0-rc.1, etc.
       # See "TAG CONVENTION" above if you prefer tags with a "v" prefix.
       - '*.*.*'
+  # Allows release.yml (and humans) to invoke this workflow against a tag ref.
+  # Required because tag pushes authored by GITHUB_TOKEN do not trigger the
+  # `push: tags:` event above (GitHub loop-prevention); workflow_dispatch is
+  # one of the two GITHUB_TOKEN exceptions, so this path threads through.
+  workflow_dispatch:
 
 jobs:
   publish:
@@ -96,4 +101,4 @@ jobs:
           [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
           npm run release
         env:
-          NPM_TOKEN: $
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

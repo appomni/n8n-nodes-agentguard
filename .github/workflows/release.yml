@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: write   # required for `gh workflow run publish.yml`
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,7 +34,7 @@ jobs:
 
       - name: Verify changelog matches
         run: |
-          expected=$(grep -m1 '^## ' CHANGELOG.md | sed 's/^## //')
+          expected=$(grep -m1 '^## ' CHANGELOG.md | sed -E 's/^## \[?([0-9A-Za-z.+-]+)\]?.*/\1/')
           if [ "$expected" != "${{ inputs.version }}" ]; then
             echo "CHANGELOG top is $expected, you asked for ${{ inputs.version }}"
             exit 1
@@ -43,3 +44,10 @@ jobs:
         run: |
           npm version ${{ inputs.version }} -m "release: %s"
           git push --follow-tags
+
+      - name: Trigger publish workflow
+        # Tag pushes from GITHUB_TOKEN don't fire `on: push: tags:`, so dispatch
+        # publish.yml explicitly against the new tag ref.
+        run: gh workflow run publish.yml --ref ${{ inputs.version }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
