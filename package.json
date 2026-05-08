@@ -1,6 +1,6 @@
 {
     "name": "@appomni/n8n-nodes-agentguard",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "AppOmni's AgentGuard node",
     "license": "MIT",
     "homepage": "https://appomni.com",
