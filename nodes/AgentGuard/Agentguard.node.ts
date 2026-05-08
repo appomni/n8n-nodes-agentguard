@@ -57,7 +57,7 @@ interface MetadataCollection {
 	requestInterface?: string;
 }
 
-export class AgentGuard implements INodeType {
+export class Agentguard implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'AppOmni AgentGuard',
 		name: 'agentguard',
@@ -290,7 +290,7 @@ export class AgentGuard implements INodeType {
 					include_details: includeDetails,
 				};
 
-				const metadata = AgentGuard.buildMetadata(enrichedMeta);
+				const metadata = Agentguard.buildMetadata(enrichedMeta);
 				if (metadata !== undefined) {
 					body.metadata = metadata as unknown as IDataObject;
 				}
@@ -309,7 +309,7 @@ export class AgentGuard implements INodeType {
 					requestOptions,
 				)) as ClassifyResponse;
 
-				const isBlocked = AgentGuard.isBlocked(response);
+				const isBlocked = Agentguard.isBlocked(response);
 
 				const output: INodeExecutionData = {
 					json: {
