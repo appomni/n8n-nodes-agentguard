@@ -35,7 +35,7 @@ export class AgentGuardApi implements ICredentialType {
 			description: 'AppOmni-issued ingest token',
 		},
 		{
-			displayName: 'Host override',
+			displayName: 'Host Override',
 			name: 'hostOverride',
 			type: 'string',
 			default: '',
